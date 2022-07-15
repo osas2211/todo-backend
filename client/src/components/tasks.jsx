@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
+import axios from "axios"
 import {
 	FormGroup,
 	FormControlLabel,
@@ -13,6 +14,16 @@ import { TasksContext, actions } from "../context/tasks"
 
 export const Tasks = ({ filter }) => {
 	const { state, dispatch } = useContext(TasksContext)
+	const getTask = async () => {
+		try {
+			const res = await axios.get("/api/v1/tasks")
+			const tasks = await res.data
+			return tasks
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
+	console.log(getTask())
 	let tasks
 	if (filter !== undefined) {
 		tasks = state.data.filter((task) => task.completed === filter)
